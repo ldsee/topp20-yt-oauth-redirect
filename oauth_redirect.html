@@ -1,27 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>OAuth Redirect Handler</title>
+    <title>OAuth Redirect</title>
 </head>
 <body>
     <script>
         (function() {
-            function getQueryParams() {
-                const params = {};
-                const queryString = window.location.hash.substring(1);
-                const regex = /([^&=]+)=([^&]*)/g;
-                let m;
-                while ((m = regex.exec(queryString)) !== null) {
-                    params[decodeURIComponent(m[1])] = decodeURIComponent(m[2]);
-                }
-                return params;
+            function getAccessTokenFromUrl() {
+                const params = new URLSearchParams(window.location.hash.substr(1));
+                return params.get('access_token');
             }
 
-            const params = getQueryParams();
-            if (params['access_token']) {
-                window.opener.postMessage(params, window.location.origin);
+            const accessToken = getAccessTokenFromUrl();
+            if (accessToken) {
+                window.opener.postMessage({ access_token: accessToken }, '*');
                 window.close();
+            } else {
+                console.error('No access token found in URL');
             }
         })();
     </script>
