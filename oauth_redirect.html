@@ -1,4 +1,3 @@
-<!-- oauth_redirect.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -21,7 +20,8 @@
 
             const params = getQueryParams();
             if (params['access_token']) {
-                window.opener.postMessage(params, '*');
+                // Changed from '*' to window.location.origin for better security
+                window.opener.postMessage(params, window.location.origin);
                 window.close();
             }
         })();
