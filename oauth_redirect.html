@@ -20,7 +20,6 @@
 
             const params = getQueryParams();
             if (params['access_token']) {
-                // Changed from '*' to window.location.origin for better security
                 window.opener.postMessage(params, window.location.origin);
                 window.close();
             }
